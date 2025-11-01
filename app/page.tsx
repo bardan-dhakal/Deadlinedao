@@ -1,207 +1,160 @@
 'use client';
 
-import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Lock, Camera, Zap, Award, ArrowRight, Gauge, TrendingUp, Shield } from 'lucide-react';
+import {
+  Lock,
+  Camera,
+  Zap,
+  Award,
+  TrendingUp,
+  Shield,
+  ArrowRight,
+  CheckCircle,
+} from 'lucide-react';
 
 const containerVariants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
+      staggerChildren: 0.08,
+      delayChildren: 0.1,
     },
   },
 };
 
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
 export default function Home() {
   return (
-    <div className="bg-defi min-h-screen">
+    <div className="bg-bg-primary">
       {/* Hero Section */}
-      <section className="section-padding relative overflow-hidden">
-        {/* Background effects */}
-        <div className="absolute top-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-        <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 via-transparent to-transparent pointer-events-none" />
+      <section className="relative py-20 lg:py-32 overflow-hidden">
+        {/* Background Effects */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl" />
+          <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+        </div>
 
         <div className="container-max relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
+            initial="hidden"
+            animate="show"
+            variants={containerVariants}
+            className="max-w-4xl mx-auto text-center"
           >
-            {/* Left content */}
-            <div className="space-y-8">
-              <div className="space-y-6">
-                <motion.h1
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2, duration: 0.8 }}
-                  className="text-heading-xl text-white"
-                >
-                  Put Your Money Where Your{' '}
-                  <span className="text-gradient">Goals</span> Are
-                </motion.h1>
-
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.4, duration: 0.8 }}
-                  className="text-subheading"
-                >
-                  Lock SOL to your deadline. AI validates your proof. Complete it? Get paid. Fail?
-                  Your money goes to winners.
-                </motion.p>
-
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.6, duration: 0.8 }}
-                  className="text-sm text-text-muted"
-                >
-                  Built with Solana, Snowflake Cortex AI, and Cloudflare for the OSU Hackathon
-                  2025
-                </motion.p>
-              </div>
-
-              {/* CTA Buttons */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8, duration: 0.6 }}
-                className="flex flex-col sm:flex-row gap-4 pt-4"
-              >
-                <button className="btn-primary pulse-glow w-full sm:w-auto flex items-center justify-center gap-2">
-                  Connect Wallet
-                  <ArrowRight className="w-5 h-5" />
-                </button>
-                <button className="btn-secondary w-full sm:w-auto">Learn More</button>
-              </motion.div>
-
-              {/* Stats Bar */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1, duration: 0.6 }}
-                className="grid grid-cols-3 gap-4 pt-8 border-t border-text-muted/20"
-              >
-                <div className="space-y-1">
-                  <div className="text-stat text-solana-green">$0</div>
-                  <div className="text-xs text-text-muted">Total Staked</div>
-                </div>
-                <div className="space-y-1">
-                  <div className="text-stat text-solana-green">0</div>
-                  <div className="text-xs text-text-muted">Active Goals</div>
-                </div>
-                <div className="space-y-1">
-                  <div className="text-stat text-solana-green">0%</div>
-                  <div className="text-xs text-text-muted">Success Rate</div>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Right - Animated Visual */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-              className="hidden lg:flex flex-col items-center justify-center gap-8"
+            {/* Main Headline */}
+            <motion.h1
+              variants={itemVariants}
+              className="text-5xl lg:text-6xl font-bold leading-tight mb-6"
             >
-              <motion.div
-                animate={{ y: [-10, 10, -10] }}
-                transition={{ duration: 3, repeat: Infinity }}
-                className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center shadow-lg"
-              >
-                <Lock className="w-10 h-10 text-white" />
-              </motion.div>
+              Put Your Money Where Your{' '}
+              <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                Goals
+              </span>{' '}
+              Are
+            </motion.h1>
 
-              <div className="h-12 text-solana-green text-2xl">↓</div>
+            {/* Subheading */}
+            <motion.p variants={itemVariants} className="text-xl text-gray-400 mb-6 max-w-2xl mx-auto leading-relaxed">
+              Lock SOL to your deadline. AI validates your proof. Complete it? Get paid. Fail? Your money goes to winners.
+            </motion.p>
 
-              <motion.div
-                animate={{ y: [10, -10, 10] }}
-                transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
-                className="w-20 h-20 rounded-full bg-gradient-to-br from-solana-green to-emerald-500 flex items-center justify-center shadow-lg"
-              >
-                <Zap className="w-10 h-10 text-black" />
-              </motion.div>
+            {/* Tagline */}
+            <motion.p variants={itemVariants} className="text-sm text-gray-500 mb-10">
+              Built with Solana, Snowflake Cortex AI, and Cloudflare for the OSU Hackathon 2025
+            </motion.p>
 
-              <div className="h-12 text-solana-green text-2xl">↓</div>
+            {/* CTA Buttons */}
+            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+              <button className="btn-primary pulse-glow inline-flex items-center justify-center gap-2 px-8 py-3 text-base max-w-sm mx-auto sm:mx-0">
+                Connect Wallet
+                <ArrowRight className="w-4 h-4" />
+              </button>
+              <button className="btn-secondary inline-flex items-center justify-center px-8 py-3 text-base max-w-sm mx-auto sm:mx-0">
+                Learn More
+              </button>
+            </motion.div>
 
-              <motion.div
-                animate={{ y: [-10, 10, -10] }}
-                transition={{ duration: 3, repeat: Infinity, delay: 1 }}
-                className="w-20 h-20 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg"
-              >
-                <Award className="w-10 h-10 text-white" />
-              </motion.div>
+            {/* Stats Bar */}
+            <motion.div
+              variants={itemVariants}
+              className="glassmorphic-card max-w-2xl mx-auto p-6 border border-purple-500/30"
+            >
+              <div className="grid grid-cols-3 gap-4 md:gap-8">
+                <div className="text-center">
+                  <div className="text-4xl font-black text-solana-green mb-1">$0</div>
+                  <div className="text-xs text-gray-500 uppercase tracking-wider flex items-center justify-center gap-1">
+                    <span>🔥</span>
+                    <span>Total Staked</span>
+                  </div>
+                </div>
+                <div className="border-l border-r border-gray-700 text-center">
+                  <div className="text-4xl font-black text-solana-green mb-1">0</div>
+                  <div className="text-xs text-gray-500 uppercase tracking-wider flex items-center justify-center gap-1">
+                    <span>⚡</span>
+                    <span>Active Goals</span>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-4xl font-black text-solana-green mb-1">0%</div>
+                  <div className="text-xs text-gray-500 uppercase tracking-wider flex items-center justify-center gap-1">
+                    <span>🏆</span>
+                    <span>Success Rate</span>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           </motion.div>
         </div>
       </section>
 
       {/* Problem Section */}
-      <section className="section-padding bg-bg-card/30 border-y border-text-muted/10">
+      <section className="py-20 bg-bg-card/30 border-y border-gray-900">
         <div className="container-max">
           <motion.div
             initial="hidden"
             whileInView="show"
             variants={containerVariants}
-            viewport={{ once: true }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
+            viewport={{ once: true, margin: '-100px' }}
+            className="max-w-3xl mx-auto text-center"
           >
-            <motion.div variants={itemVariants} className="space-y-6">
-              <h2 className="text-heading-lg text-white">
-                The Problem with Traditional Goal Apps
-              </h2>
-              <div className="space-y-4">
-                <p className="text-lg text-text-secondary">
-                  <span className="text-4xl font-black text-danger-red">89%</span> of people fail
-                  to achieve their goals.
-                </p>
-                <p className="text-text-secondary leading-relaxed">
-                  Traditional goal-tracking apps are free, so there's{' '}
-                  <span className="text-white font-semibold">no consequence for giving up</span>.
-                  Your broken promises cost you nothing. That's the problem.
-                </p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              variants={itemVariants}
-              className="glassmorphic-card border-danger-red/30 text-center py-16"
-            >
-              <div className="text-6xl mb-4">📉</div>
-              <p className="text-text-secondary">
-                Most goal-tracking apps are forgotten in 3 weeks...
+            <motion.h2 variants={itemVariants} className="text-4xl font-bold mb-6">
+              The Problem
+            </motion.h2>
+            <motion.div variants={itemVariants} className="mb-8">
+              <span className="text-7xl font-black text-danger-red drop-shadow-lg">89%</span>
+              <p className="text-xl text-gray-400 mt-4">
+                of people <span className="text-white font-semibold">fail to achieve their goals</span>
               </p>
             </motion.div>
+            <motion.p variants={itemVariants} className="text-lg text-gray-300 leading-relaxed">
+              Traditional goal-tracking apps are <span className="text-white font-semibold">free</span>, so there's{' '}
+              <span className="text-danger-red font-semibold">no real consequence</span> for giving up. Your broken promises cost you nothing.
+            </motion.p>
           </motion.div>
         </div>
       </section>
 
-      {/* How It Works - 5 Steps */}
-      <section className="section-padding">
+      {/* How It Works Section */}
+      <section id="how-it-works" className="py-20">
         <div className="container-max">
           <motion.div
             initial="hidden"
             whileInView="show"
             variants={containerVariants}
-            viewport={{ once: true }}
-            className="text-center mb-16 space-y-4"
+            viewport={{ once: true, margin: '-100px' }}
+            className="text-center mb-16"
           >
-            <motion.h2 variants={itemVariants} className="text-heading-lg text-white">
+            <motion.h2 variants={itemVariants} className="text-4xl font-bold mb-4">
               How It Works
             </motion.h2>
-            <motion.p variants={itemVariants} className="text-subheading max-w-2xl mx-auto">
-              Five simple steps from goal to reward. Real accountability powered by blockchain and
-              AI.
+            <motion.p variants={itemVariants} className="text-xl text-gray-400 max-w-3xl mx-auto">
+              Five simple steps from goal to reward. Real accountability powered by blockchain and AI.
             </motion.p>
           </motion.div>
 
@@ -209,73 +162,53 @@ export default function Home() {
             initial="hidden"
             whileInView="show"
             variants={containerVariants}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: '-100px' }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6"
           >
             {[
-              {
-                step: 1,
-                title: 'Stake SOL on your goal',
-                description: 'Set a deadline and lock your stake',
-                icon: Lock,
-              },
-              {
-                step: 2,
-                title: 'Submit proof when complete',
-                description: 'Upload text + image proof',
-                icon: Camera,
-              },
-              {
-                step: 3,
-                title: 'AI validates instantly',
-                description: 'Snowflake Cortex 5-layer verification',
-                icon: Zap,
-              },
-              {
-                step: 4,
-                title: 'Get paid if approved',
-                description: '0.5 SOL → 0.83 SOL (+66%)',
-                icon: TrendingUp,
-              },
-              {
-                step: 5,
-                title: 'Stake redistributed if you fail',
-                description: 'Your money goes to winners',
-                icon: Award,
-              },
+              { step: 1, title: 'Stake SOL', desc: 'Lock your stake', icon: Lock, color: 'purple', bgColor: 'bg-purple-500/20', borderColor: 'border-l-4 border-l-purple-500' },
+              { step: 2, title: 'Submit Proof', desc: 'Text + image', icon: Camera, color: 'blue', bgColor: 'bg-blue-500/20', borderColor: 'border-l-4 border-l-blue-500' },
+              { step: 3, title: 'AI Validates', desc: '5-layer check', icon: Zap, color: 'cyan', bgColor: 'bg-cyan-500/20', borderColor: 'border-l-4 border-l-cyan-500', featured: true },
+              { step: 4, title: 'Get Paid', desc: 'Instant payout', icon: TrendingUp, color: 'green', bgColor: 'bg-green-500/20', borderColor: 'border-l-4 border-l-green-500' },
+              { step: 5, title: 'Redistribute', desc: 'To winners', icon: Award, color: 'orange', bgColor: 'bg-orange-500/20', borderColor: 'border-l-4 border-l-orange-500' },
             ].map((item, idx) => (
               <motion.div
                 key={idx}
                 variants={itemVariants}
-                className="glassmorphic-card flex flex-col items-center text-center space-y-4"
+                className={`glassmorphic-card p-6 text-center space-y-4 ${item.borderColor} ${item.featured ? 'ring-2 ring-cyan-500/50 transform lg:scale-105' : ''}`}
               >
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold">
-                  {item.step}
+                <div className="flex items-center justify-between">
+                  <div className={`w-8 h-8 rounded-full ${item.bgColor} flex items-center justify-center text-white text-sm font-bold`}>
+                    {item.step}
+                  </div>
+                  {item.featured && <span className="text-xs font-bold text-solana-green bg-solana-green/20 px-2 py-1 rounded-full">⭐ Core</span>}
                 </div>
-                <item.icon className="w-8 h-8 text-solana-green" />
+                <div className={`w-16 h-16 rounded-full ${item.bgColor} flex items-center justify-center mx-auto`}>
+                  <item.icon className="w-8 h-8 text-solana-green" />
+                </div>
                 <h4 className="text-lg font-semibold text-white">{item.title}</h4>
-                <p className="text-sm text-text-muted">{item.description}</p>
+                <p className="text-sm text-gray-400">{item.desc}</p>
               </motion.div>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* Key Features Section */}
-      <section className="section-padding bg-bg-card/30 border-y border-text-muted/10">
+      {/* Features Section */}
+      <section id="features" className="py-20 bg-bg-card/30 border-y border-gray-900">
         <div className="container-max">
           <motion.div
             initial="hidden"
             whileInView="show"
             variants={containerVariants}
-            viewport={{ once: true }}
-            className="text-center mb-16 space-y-4"
+            viewport={{ once: true, margin: '-100px' }}
+            className="text-center mb-16"
           >
-            <motion.h2 variants={itemVariants} className="text-heading-lg text-white">
-              Powered By Innovation
+            <motion.h2 variants={itemVariants} className="text-4xl font-bold mb-4">
+              Powered by Cutting-Edge Technology
             </motion.h2>
-            <motion.p variants={itemVariants} className="text-subheading max-w-2xl mx-auto">
-              Built with industry-leading blockchain and AI technology
+            <motion.p variants={itemVariants} className="text-xl text-gray-400 max-w-3xl mx-auto">
+              Built on Solana, validated by Snowflake AI, secured by Cloudflare
             </motion.p>
           </motion.div>
 
@@ -283,236 +216,143 @@ export default function Home() {
             initial="hidden"
             whileInView="show"
             variants={containerVariants}
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            viewport={{ once: true, margin: '-100px' }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
           >
-            {/* Feature 1 */}
-            <motion.div variants={itemVariants} className="glassmorphic-card space-y-4">
-              <div className="flex items-center justify-between">
-                <Zap className="w-8 h-8 text-solana-green" />
-                <span className="text-xs font-bold text-solana-green bg-solana-green/10 px-3 py-1 rounded-full">
-                  SNOWFLAKE
-                </span>
-              </div>
-              <h4 className="text-lg font-bold text-white">🤖 AI-Powered Validation</h4>
-              <div className="space-y-3">
-                <p className="text-sm text-text-secondary">
-                  Snowflake Cortex runs a 5-layer validation pipeline
-                </p>
-                <div className="space-y-2 text-xs text-text-muted">
-                  <p>✓ Claude 3.5 Sonnet - Text analysis</p>
-                  <p>✓ Mistral Large - Fraud detection</p>
-                  <p>✓ Sentiment analysis & specificity checks</p>
-                  <p>✓ Quality scoring algorithm</p>
-                </div>
-                <div className="pt-2 border-t border-text-muted/20">
-                  <p className="text-xs font-semibold text-solana-green">
-                    Auto-decisioning: Approved (≥75 quality) | Rejected | Manual Review
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Feature 2 */}
-            <motion.div variants={itemVariants} className="glassmorphic-card space-y-4">
-              <div className="flex items-center justify-between">
-                <TrendingUp className="w-8 h-8 text-solana-green" />
-                <span className="text-xs font-bold text-solana-green bg-solana-green/10 px-3 py-1 rounded-full">
-                  SOLANA
-                </span>
-              </div>
-              <h4 className="text-lg font-bold text-white">💰 Proportional Redistribution</h4>
-              <div className="space-y-3">
-                <p className="text-sm text-text-secondary">Fair economic model on Solana</p>
-                <div className="bg-bg-primary/50 rounded p-3 font-mono text-xs text-solana-green">
-                  Your Payout = Stake + (Stake / Winners) × Losers
-                </div>
-                <div className="space-y-2 text-sm">
-                  <p className="text-text-secondary">
-                    <span className="text-white font-semibold">Example:</span> 0.5 SOL → 0.83 SOL
-                    (+66%)
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Feature 3 */}
-            <motion.div variants={itemVariants} className="glassmorphic-card space-y-4">
-              <div className="flex items-center justify-between">
-                <Shield className="w-8 h-8 text-solana-green" />
-                <span className="text-xs font-bold text-solana-green bg-solana-green/10 px-3 py-1 rounded-full">
-                  CLOUDFLARE
-                </span>
-              </div>
-              <h4 className="text-lg font-bold text-white">☁️ Secure Image Storage</h4>
-              <div className="space-y-3">
-                <p className="text-sm text-text-secondary">Cloudflare R2 for proof images</p>
-                <ul className="space-y-2 text-sm text-text-muted">
-                  <li>✓ Direct browser uploads</li>
-                  <li>✓ 10MB image limit</li>
-                  <li>✓ CDN-backed delivery</li>
-                  <li>✓ Presigned URLs</li>
-                </ul>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Earnings Example */}
-      <section className="section-padding">
-        <div className="container-max">
-          <motion.div
-            initial="hidden"
-            whileInView="show"
-            variants={containerVariants}
-            viewport={{ once: true }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
-          >
-            <motion.div variants={itemVariants} className="glassmorphic-card space-y-8">
-              <div className="space-y-2">
-                <p className="text-xs text-text-muted uppercase tracking-wider">Example Earnings</p>
-                <h3 className="text-2xl font-bold text-white">Learn TypeScript Course</h3>
-              </div>
-
-              <div className="space-y-4 border-t border-text-muted/20 pt-6">
-                <div className="flex justify-between items-center">
-                  <span className="text-text-secondary">Your Stake</span>
-                  <span className="text-xl font-bold text-white">0.5 SOL</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-text-secondary">Community Stake (5 others)</span>
-                  <span className="text-xl font-bold text-white">2.5 SOL</span>
-                </div>
-                <div className="border-t border-text-muted/20 pt-4 flex justify-between items-center">
-                  <span className="text-text-secondary">Failed Goals Forfeited</span>
-                  <span className="text-xl font-bold text-danger-red">1.0 SOL</span>
-                </div>
-
-                <div className="bg-solana-green/10 border border-solana-green/30 rounded-lg p-4 text-center space-y-1">
-                  <p className="text-xs text-text-muted">YOU GET</p>
-                  <p className="text-3xl font-black text-solana-green">0.83 SOL</p>
-                  <p className="text-xs text-text-muted">+66% profit! 🎉</p>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div variants={itemVariants} className="space-y-6">
-              <h3 className="text-heading-lg text-white">Earn Together</h3>
-              <p className="text-lg text-text-secondary leading-relaxed">
-                Your success benefits from others' failures. But it's not zero-sum. A rising tide
-                lifts all boats. More goal-achievers means a healthier community.
-              </p>
-
+            {[
+              {
+                title: '🤖 AI-Powered Validation',
+                badge: 'PRIMARY',
+                desc: '5-layer validation pipeline using Snowflake Cortex',
+                features: ['Claude 3.5 Sonnet', 'Mistral Large', 'Fraud Detection', 'Quality Scoring'],
+                stat: '87% auto-approval',
+              },
+              {
+                title: '💰 Smart Redistribution',
+                badge: 'SOLANA',
+                desc: 'Fair economic model on blockchain',
+                formula: 'Payout = Stake + (Stake/Winners) × Losers',
+                example: '0.5 SOL → 0.83 SOL (+66%)',
+                stat: '<1s payout',
+              },
+              {
+                title: '☁️ Enterprise Security',
+                badge: 'CLOUDFLARE',
+                desc: 'Cloudflare R2 with presigned URLs',
+                features: ['Direct uploads', '10MB limit', 'CDN delivery', 'Auto cleanup'],
+                stat: '<100ms response',
+              },
+            ].map((feature, idx) => (
               <motion.div
-                initial="hidden"
-                whileInView="show"
-                variants={containerVariants}
-                viewport={{ once: true }}
-                className="glassmorphic-card space-y-4"
+                key={idx}
+                variants={itemVariants}
+                className="glassmorphic-card p-8 space-y-4 border-t-2 border-t-cyan-500"
               >
-                {[
-                  {
-                    title: 'Fair Distribution',
-                    desc: 'Rewards proportional to your stake',
-                  },
-                  {
-                    title: 'Transparent & Verifiable',
-                    desc: 'All transactions on blockchain',
-                  },
-                  {
-                    title: 'No Counterparty Risk',
-                    desc: 'Solana escrow handles all payouts',
-                  },
-                ].map((item, idx) => (
-                  <motion.div
-                    key={idx}
-                    variants={itemVariants}
-                    className="flex items-start gap-3"
-                  >
-                    <div className="w-5 h-5 rounded-full bg-solana-green flex items-center justify-center flex-shrink-0 mt-1">
-                      <span className="text-xs text-black font-bold">✓</span>
-                    </div>
-                    <div>
-                      <p className="font-semibold text-white">{item.title}</p>
-                      <p className="text-sm text-text-muted">{item.desc}</p>
-                    </div>
-                  </motion.div>
-                ))}
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-bold text-white">{feature.title}</h3>
+                  <span className="text-xs font-bold text-solana-green bg-solana-green/20 px-3 py-1 rounded-full">
+                    {feature.badge}
+                  </span>
+                </div>
+                <p className="text-sm text-gray-400">{feature.desc}</p>
+                {feature.formula && (
+                  <div className="bg-bg-primary/50 rounded p-3 font-mono text-xs text-solana-green">
+                    {feature.formula}
+                  </div>
+                )}
+                {feature.example && (
+                  <p className="text-sm text-gray-300">
+                    <span className="text-white font-semibold">Example:</span> {feature.example}
+                  </p>
+                )}
+                {feature.features && (
+                  <ul className="space-y-2 text-sm text-gray-400">
+                    {feature.features.map((f) => (
+                      <li key={f}>✓ {f}</li>
+                    ))}
+                  </ul>
+                )}
+                <div className="pt-4 border-t border-gray-700">
+                  <p className="text-xs text-solana-green font-semibold">{feature.stat}</p>
+                </div>
               </motion.div>
-            </motion.div>
+            ))}
           </motion.div>
         </div>
       </section>
 
       {/* Tech Stack Section */}
-      <section className="section-padding bg-bg-card/30 border-y border-text-muted/10">
+      <section className="py-20">
+        <div className="container-max">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            variants={containerVariants}
+            viewport={{ once: true, margin: '-100px' }}
+            className="text-center mb-16"
+          >
+            <motion.h2 variants={itemVariants} className="text-4xl font-bold mb-4">
+              Built With Industry Leaders
+            </motion.h2>
+            <motion.p variants={itemVariants} className="text-xl text-gray-400 max-w-3xl mx-auto">
+              Combining the best blockchain, AI, and infrastructure technologies
+            </motion.p>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            variants={containerVariants}
+            viewport={{ once: true, margin: '-100px' }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
+            {[
+              { name: 'Solana', desc: 'Lightning-fast blockchain', icon: '⚡' },
+              { name: 'Snowflake', desc: 'AI & ML platform', icon: '🤖' },
+              { name: 'Cloudflare', desc: 'Storage & CDN', icon: '☁️' },
+              { name: 'Supabase', desc: 'PostgreSQL database', icon: '🗄️' },
+            ].map((tech, idx) => (
+              <motion.div
+                key={idx}
+                variants={itemVariants}
+                className="card text-center p-6"
+              >
+                <div className="text-5xl mb-4">{tech.icon}</div>
+                <h4 className="text-lg font-bold text-white mb-2">{tech.name}</h4>
+                <p className="text-sm text-gray-400">{tech.desc}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Final CTA Section */}
+      <section className="py-20 bg-gradient-to-b from-purple-500/5 via-transparent to-blue-500/5">
         <div className="container-max">
           <motion.div
             initial="hidden"
             whileInView="show"
             variants={containerVariants}
             viewport={{ once: true }}
-            className="space-y-12"
+            className="max-w-3xl mx-auto text-center space-y-8"
           >
-            <motion.div variants={itemVariants} className="text-center space-y-4">
-              <h2 className="text-heading-lg text-white">Built with Industry-Leading Technology</h2>
-              <p className="text-subheading max-w-2xl mx-auto">
-                Combining Solana, Snowflake, Cloudflare, and Supabase for a premium experience
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial="hidden"
-              whileInView="show"
-              variants={containerVariants}
-              viewport={{ once: true }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+            <motion.h2 variants={itemVariants} className="text-5xl font-bold">
+              Stop Talking. Start Achieving.
+            </motion.h2>
+            <motion.p variants={itemVariants} className="text-xl text-gray-400">
+              Real stakes. Real accountability. Real results. Your next goal is one click away.
+            </motion.p>
+            <motion.button
+              variants={itemVariants}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="btn-primary pulse-glow inline-flex items-center gap-2 px-10 py-4 text-lg"
             >
-              {[
-                { name: 'Solana', desc: 'Blockchain', icon: '⚡' },
-                { name: 'Snowflake', desc: 'AI & ML', icon: '🤖' },
-                { name: 'Cloudflare', desc: 'Storage & CDN', icon: '☁️' },
-                { name: 'Supabase', desc: 'Database', icon: '🗄️' },
-              ].map((tech, idx) => (
-                <motion.div key={idx} variants={itemVariants} className="card text-center">
-                  <div className="text-5xl mb-4">{tech.icon}</div>
-                  <h4 className="text-lg font-bold text-white mb-1">{tech.name}</h4>
-                  <p className="text-sm text-text-muted">{tech.desc}</p>
-                </motion.div>
-              ))}
-            </motion.div>
+              Connect Wallet
+              <ArrowRight className="w-5 h-5" />
+            </motion.button>
           </motion.div>
         </div>
-      </section>
-
-      {/* Final CTA */}
-      <section className="section-padding relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-purple-500/10 via-transparent to-blue-500/10 pointer-events-none" />
-
-        <motion.div
-          initial="hidden"
-          whileInView="show"
-          variants={containerVariants}
-          viewport={{ once: true }}
-          className="container-max relative z-10 text-center space-y-8"
-        >
-          <motion.h2 variants={itemVariants} className="text-heading-lg text-white">
-            Stop Talking. Start Achieving.
-          </motion.h2>
-          <motion.p variants={itemVariants} className="text-subheading max-w-2xl mx-auto">
-            Real stakes. Real accountability. Real results. Your next goal is one click away.
-          </motion.p>
-          <motion.button
-            variants={itemVariants}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="btn-primary pulse-glow inline-flex items-center gap-2 text-lg px-10 py-4"
-          >
-            Connect Wallet
-            <ArrowRight className="w-5 h-5" />
-          </motion.button>
-        </motion.div>
       </section>
     </div>
   );
