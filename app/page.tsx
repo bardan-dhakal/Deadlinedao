@@ -1,271 +1,519 @@
 'use client';
 
 import Link from 'next/link';
-import { Target, Lock, CheckCircle, Trophy, Zap, Shield, TrendingUp, Users } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Lock, Camera, Zap, Award, ArrowRight, Gauge, TrendingUp, Shield } from 'lucide-react';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+};
 
 export default function Home() {
   return (
-    <main className="min-h-screen gradient-primary">
+    <div className="bg-defi min-h-screen">
       {/* Hero Section */}
-      <div className="relative overflow-hidden py-24 lg:py-40">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 glow-blue opacity-30" />
-        <div className="absolute top-20 right-10 w-72 h-72 bg-gradient-to-br from-blue-500/20 to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-10 w-96 h-96 bg-gradient-to-tr from-cyan-500/10 to-transparent rounded-full blur-3xl" />
+      <section className="section-padding relative overflow-hidden">
+        {/* Background effects */}
+        <div className="absolute top-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 via-transparent to-transparent pointer-events-none" />
 
         <div className="container-max relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Left Content */}
-            <div className="space-y-8 text-center lg:text-left">
-              <div className="space-y-4">
-                <div className="inline-block px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-300 text-sm font-semibold mb-4">
-                  🚀 AI-Powered Accountability Platform
-                </div>
-                <h1 className="text-5xl lg:text-7xl font-bold text-white">
-                  Put Your Money Where Your <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">Goals</span> Are
-                </h1>
-                <p className="text-xl text-slate-300 max-w-2xl mx-auto lg:mx-0">
-                  89% of people fail their goals. Not here. Stake SOL, get your proof validated by AI, and earn rewards for success. Real stakes. Real accountability. Real results.
-                </p>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
+          >
+            {/* Left content */}
+            <div className="space-y-8">
+              <div className="space-y-6">
+                <motion.h1
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2, duration: 0.8 }}
+                  className="text-heading-xl text-white"
+                >
+                  Put Your Money Where Your{' '}
+                  <span className="text-gradient">Goals</span> Are
+                </motion.h1>
+
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4, duration: 0.8 }}
+                  className="text-subheading"
+                >
+                  Lock SOL to your deadline. AI validates your proof. Complete it? Get paid. Fail?
+                  Your money goes to winners.
+                </motion.p>
+
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.6, duration: 0.8 }}
+                  className="text-sm text-text-muted"
+                >
+                  Built with Solana, Snowflake Cortex AI, and Cloudflare for the OSU Hackathon
+                  2025
+                </motion.p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Link href="/create" className="btn-primary text-center">
-                  Create Goal Now
-                </Link>
-                <Link href="/feed" className="btn-secondary text-center">
-                  Browse Community Goals
-                </Link>
-              </div>
+              {/* CTA Buttons */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 0.6 }}
+                className="flex flex-col sm:flex-row gap-4 pt-4"
+              >
+                <button className="btn-primary pulse-glow w-full sm:w-auto flex items-center justify-center gap-2">
+                  Connect Wallet
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+                <button className="btn-secondary w-full sm:w-auto">Learn More</button>
+              </motion.div>
 
-              {/* Quick Stats */}
-              <div className="grid grid-cols-3 gap-4 pt-8 border-t border-slate-700">
-                <div>
-                  <div className="text-2xl font-bold text-cyan-400">$0.00025</div>
-                  <div className="text-sm text-slate-400">Transaction Cost</div>
+              {/* Stats Bar */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1, duration: 0.6 }}
+                className="grid grid-cols-3 gap-4 pt-8 border-t border-text-muted/20"
+              >
+                <div className="space-y-1">
+                  <div className="text-stat text-solana-green">$0</div>
+                  <div className="text-xs text-text-muted">Total Staked</div>
                 </div>
-                <div>
-                  <div className="text-2xl font-bold text-cyan-400">400ms</div>
-                  <div className="text-sm text-slate-400">Payout Speed</div>
+                <div className="space-y-1">
+                  <div className="text-stat text-solana-green">0</div>
+                  <div className="text-xs text-text-muted">Active Goals</div>
                 </div>
-                <div>
-                  <div className="text-2xl font-bold text-cyan-400">5-Layer</div>
-                  <div className="text-sm text-slate-400">AI Validation</div>
+                <div className="space-y-1">
+                  <div className="text-stat text-solana-green">0%</div>
+                  <div className="text-xs text-text-muted">Success Rate</div>
                 </div>
-              </div>
+              </motion.div>
             </div>
 
-            {/* Right - Visual Flow */}
-            <div className="hidden lg:block relative h-96">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent rounded-2xl border border-blue-500/20" />
-              <div className="relative h-full flex flex-col items-center justify-center space-y-6 p-8">
-                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-blue-500/20 border border-blue-500/40">
-                  <Target className="w-8 h-8 text-blue-400" />
-                </div>
-                <div className="text-slate-400">↓</div>
-                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-cyan-500/20 border border-cyan-500/40">
-                  <Lock className="w-8 h-8 text-cyan-400" />
-                </div>
-                <div className="text-slate-400">↓</div>
-                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-purple-500/20 border border-purple-500/40">
-                  <CheckCircle className="w-8 h-8 text-purple-400" />
-                </div>
-                <div className="text-slate-400">↓</div>
-                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-green-500/20 border border-green-500/40">
-                  <Trophy className="w-8 h-8 text-green-400" />
-                </div>
-              </div>
-            </div>
-          </div>
+            {/* Right - Animated Visual */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+              className="hidden lg:flex flex-col items-center justify-center gap-8"
+            >
+              <motion.div
+                animate={{ y: [-10, 10, -10] }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center shadow-lg"
+              >
+                <Lock className="w-10 h-10 text-white" />
+              </motion.div>
+
+              <div className="h-12 text-solana-green text-2xl">↓</div>
+
+              <motion.div
+                animate={{ y: [10, -10, 10] }}
+                transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
+                className="w-20 h-20 rounded-full bg-gradient-to-br from-solana-green to-emerald-500 flex items-center justify-center shadow-lg"
+              >
+                <Zap className="w-10 h-10 text-black" />
+              </motion.div>
+
+              <div className="h-12 text-solana-green text-2xl">↓</div>
+
+              <motion.div
+                animate={{ y: [-10, 10, -10] }}
+                transition={{ duration: 3, repeat: Infinity, delay: 1 }}
+                className="w-20 h-20 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg"
+              >
+                <Award className="w-10 h-10 text-white" />
+              </motion.div>
+            </motion.div>
+          </motion.div>
         </div>
-      </div>
+      </section>
 
       {/* Problem Section */}
-      <div className="py-24 bg-gradient-to-b from-slate-900/50 to-slate-900/30 border-t border-slate-800">
+      <section className="section-padding bg-bg-card/30 border-y border-text-muted/10">
         <div className="container-max">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <h2 className="text-4xl lg:text-5xl font-bold text-white">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            variants={containerVariants}
+            viewport={{ once: true }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
+          >
+            <motion.div variants={itemVariants} className="space-y-6">
+              <h2 className="text-heading-lg text-white">
                 The Problem with Traditional Goal Apps
               </h2>
-              <div className="space-y-4 text-slate-300">
-                <p className="text-lg">
-                  <span className="text-3xl font-bold text-red-400">89%</span> of people fail to achieve their goals. Why? <span className="font-semibold text-white">There's no consequence.</span>
+              <div className="space-y-4">
+                <p className="text-lg text-text-secondary">
+                  <span className="text-4xl font-black text-danger-red">89%</span> of people fail
+                  to achieve their goals.
                 </p>
-                <p>
-                  Free goal-tracking apps? Your broken promises cost you nothing. That's the problem. Without real stakes, motivation disappears when it gets hard.
+                <p className="text-text-secondary leading-relaxed">
+                  Traditional goal-tracking apps are free, so there's{' '}
+                  <span className="text-white font-semibold">no consequence for giving up</span>.
+                  Your broken promises cost you nothing. That's the problem.
                 </p>
               </div>
-            </div>
-            <div className="card text-center py-12">
+            </motion.div>
+
+            <motion.div
+              variants={itemVariants}
+              className="glassmorphic-card border-danger-red/30 text-center py-16"
+            >
               <div className="text-6xl mb-4">📉</div>
-              <p className="text-slate-300">Most goal-tracking apps are forgotten 3 weeks in...</p>
-            </div>
-          </div>
+              <p className="text-text-secondary">
+                Most goal-tracking apps are forgotten in 3 weeks...
+              </p>
+            </motion.div>
+          </motion.div>
         </div>
-      </div>
+      </section>
 
-      {/* Solution: How It Works */}
-      <div className="py-24">
+      {/* How It Works - 5 Steps */}
+      <section className="section-padding">
         <div className="container-max">
-          <div className="text-center space-y-4 mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold text-white">How It Works</h2>
-            <p className="text-xl text-slate-300 max-w-2xl mx-auto">
-              Five simple steps from goal to reward. Real accountability powered by blockchain and AI.
-            </p>
-          </div>
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            variants={containerVariants}
+            viewport={{ once: true }}
+            className="text-center mb-16 space-y-4"
+          >
+            <motion.h2 variants={itemVariants} className="text-heading-lg text-white">
+              How It Works
+            </motion.h2>
+            <motion.p variants={itemVariants} className="text-subheading max-w-2xl mx-auto">
+              Five simple steps from goal to reward. Real accountability powered by blockchain and
+              AI.
+            </motion.p>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-            {[
-              { icon: Target, title: 'Set Goal', description: 'Define your goal & deadline', number: '1' },
-              { icon: Lock, title: 'Stake SOL', description: 'Put money on the line', number: '2' },
-              { icon: CheckCircle, title: 'Submit Proof', description: 'Image + description', number: '3' },
-              { icon: Zap, title: 'AI Validates', description: '5-layer verification', number: '4' },
-              { icon: Trophy, title: 'Get Paid', description: 'Stake + earnings', number: '5' },
-            ].map((step, idx) => (
-              <div key={idx} className="card text-center space-y-4 flex flex-col items-center justify-center">
-                <div className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold">
-                  {step.number}
-                </div>
-                <step.icon className="w-8 h-8 text-cyan-400" />
-                <h4 className="text-white font-semibold">{step.title}</h4>
-                <p className="text-sm text-slate-400">{step.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Key Features */}
-      <div className="py-24 bg-gradient-to-b from-slate-900/50 to-slate-900/30 border-y border-slate-800">
-        <div className="container-max">
-          <div className="text-center space-y-4 mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold text-white">Powered By Innovation</h2>
-            <p className="text-xl text-slate-300 max-w-2xl mx-auto">
-              Built with the best blockchain and AI technology
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            variants={containerVariants}
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6"
+          >
             {[
               {
-                icon: <Zap className="w-8 h-8 text-cyan-400" />,
-                title: 'AI Proof Validation',
-                description: 'Snowflake Cortex validates proofs using Claude & Mistral AI with 5-layer verification',
-                tech: 'Snowflake Cortex',
+                step: 1,
+                title: 'Stake SOL on your goal',
+                description: 'Set a deadline and lock your stake',
+                icon: Lock,
               },
               {
-                icon: <Shield className="w-8 h-8 text-blue-400" />,
-                title: 'Blockchain Escrow',
-                description: 'SOL stakes locked in escrow. Lightning-fast payouts via Solana blockchain.',
-                tech: 'Solana',
+                step: 2,
+                title: 'Submit proof when complete',
+                description: 'Upload text + image proof',
+                icon: Camera,
               },
               {
-                icon: <Users className="w-8 h-8 text-purple-400" />,
-                title: 'Proportional Rewards',
-                description: 'Your payout = stake + share of losers\' stakes. Winners earn together.',
-                tech: 'Smart Economics',
+                step: 3,
+                title: 'AI validates instantly',
+                description: 'Snowflake Cortex 5-layer verification',
+                icon: Zap,
               },
               {
-                icon: <TrendingUp className="w-8 h-8 text-green-400" />,
-                title: 'Real-time Analytics',
-                description: 'Track your success rate, earnings, and compete on the leaderboard.',
-                tech: 'Live Dashboard',
+                step: 4,
+                title: 'Get paid if approved',
+                description: '0.5 SOL → 0.83 SOL (+66%)',
+                icon: TrendingUp,
               },
-            ].map((feature, idx) => (
-              <div key={idx} className="card space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>{feature.icon}</div>
-                  <span className="text-xs font-semibold text-blue-400 bg-blue-500/10 px-3 py-1 rounded-full">
-                    {feature.tech}
-                  </span>
+              {
+                step: 5,
+                title: 'Stake redistributed if you fail',
+                description: 'Your money goes to winners',
+                icon: Award,
+              },
+            ].map((item, idx) => (
+              <motion.div
+                key={idx}
+                variants={itemVariants}
+                className="glassmorphic-card flex flex-col items-center text-center space-y-4"
+              >
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold">
+                  {item.step}
                 </div>
-                <h4 className="text-lg font-semibold text-white">{feature.title}</h4>
-                <p className="text-sm text-slate-400">{feature.description}</p>
-              </div>
+                <item.icon className="w-8 h-8 text-solana-green" />
+                <h4 className="text-lg font-semibold text-white">{item.title}</h4>
+                <p className="text-sm text-text-muted">{item.description}</p>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </section>
 
-      {/* Example Earnings */}
-      <div className="py-24">
+      {/* Key Features Section */}
+      <section className="section-padding bg-bg-card/30 border-y border-text-muted/10">
         <div className="container-max">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="card space-y-8">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            variants={containerVariants}
+            viewport={{ once: true }}
+            className="text-center mb-16 space-y-4"
+          >
+            <motion.h2 variants={itemVariants} className="text-heading-lg text-white">
+              Powered By Innovation
+            </motion.h2>
+            <motion.p variants={itemVariants} className="text-subheading max-w-2xl mx-auto">
+              Built with industry-leading blockchain and AI technology
+            </motion.p>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            variants={containerVariants}
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
+            {/* Feature 1 */}
+            <motion.div variants={itemVariants} className="glassmorphic-card space-y-4">
+              <div className="flex items-center justify-between">
+                <Zap className="w-8 h-8 text-solana-green" />
+                <span className="text-xs font-bold text-solana-green bg-solana-green/10 px-3 py-1 rounded-full">
+                  SNOWFLAKE
+                </span>
+              </div>
+              <h4 className="text-lg font-bold text-white">🤖 AI-Powered Validation</h4>
+              <div className="space-y-3">
+                <p className="text-sm text-text-secondary">
+                  Snowflake Cortex runs a 5-layer validation pipeline
+                </p>
+                <div className="space-y-2 text-xs text-text-muted">
+                  <p>✓ Claude 3.5 Sonnet - Text analysis</p>
+                  <p>✓ Mistral Large - Fraud detection</p>
+                  <p>✓ Sentiment analysis & specificity checks</p>
+                  <p>✓ Quality scoring algorithm</p>
+                </div>
+                <div className="pt-2 border-t border-text-muted/20">
+                  <p className="text-xs font-semibold text-solana-green">
+                    Auto-decisioning: Approved (≥75 quality) | Rejected | Manual Review
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Feature 2 */}
+            <motion.div variants={itemVariants} className="glassmorphic-card space-y-4">
+              <div className="flex items-center justify-between">
+                <TrendingUp className="w-8 h-8 text-solana-green" />
+                <span className="text-xs font-bold text-solana-green bg-solana-green/10 px-3 py-1 rounded-full">
+                  SOLANA
+                </span>
+              </div>
+              <h4 className="text-lg font-bold text-white">💰 Proportional Redistribution</h4>
+              <div className="space-y-3">
+                <p className="text-sm text-text-secondary">Fair economic model on Solana</p>
+                <div className="bg-bg-primary/50 rounded p-3 font-mono text-xs text-solana-green">
+                  Your Payout = Stake + (Stake / Winners) × Losers
+                </div>
+                <div className="space-y-2 text-sm">
+                  <p className="text-text-secondary">
+                    <span className="text-white font-semibold">Example:</span> 0.5 SOL → 0.83 SOL
+                    (+66%)
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Feature 3 */}
+            <motion.div variants={itemVariants} className="glassmorphic-card space-y-4">
+              <div className="flex items-center justify-between">
+                <Shield className="w-8 h-8 text-solana-green" />
+                <span className="text-xs font-bold text-solana-green bg-solana-green/10 px-3 py-1 rounded-full">
+                  CLOUDFLARE
+                </span>
+              </div>
+              <h4 className="text-lg font-bold text-white">☁️ Secure Image Storage</h4>
+              <div className="space-y-3">
+                <p className="text-sm text-text-secondary">Cloudflare R2 for proof images</p>
+                <ul className="space-y-2 text-sm text-text-muted">
+                  <li>✓ Direct browser uploads</li>
+                  <li>✓ 10MB image limit</li>
+                  <li>✓ CDN-backed delivery</li>
+                  <li>✓ Presigned URLs</li>
+                </ul>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Earnings Example */}
+      <section className="section-padding">
+        <div className="container-max">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            variants={containerVariants}
+            viewport={{ once: true }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
+          >
+            <motion.div variants={itemVariants} className="glassmorphic-card space-y-8">
               <div className="space-y-2">
-                <p className="text-sm text-slate-400">Example Earnings</p>
+                <p className="text-xs text-text-muted uppercase tracking-wider">Example Earnings</p>
                 <h3 className="text-2xl font-bold text-white">Learn TypeScript Course</h3>
               </div>
-              <div className="space-y-4 border-t border-slate-700 pt-6">
+
+              <div className="space-y-4 border-t border-text-muted/20 pt-6">
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">Your Stake</span>
+                  <span className="text-text-secondary">Your Stake</span>
                   <span className="text-xl font-bold text-white">0.5 SOL</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-slate-300">Community Stake (5 others)</span>
+                  <span className="text-text-secondary">Community Stake (5 others)</span>
                   <span className="text-xl font-bold text-white">2.5 SOL</span>
                 </div>
-                <div className="border-t border-slate-700 pt-4 flex justify-between items-center">
-                  <span className="text-slate-300">Failed Goals Forfeited</span>
-                  <span className="text-xl font-bold text-red-400">1.0 SOL</span>
+                <div className="border-t border-text-muted/20 pt-4 flex justify-between items-center">
+                  <span className="text-text-secondary">Failed Goals Forfeited</span>
+                  <span className="text-xl font-bold text-danger-red">1.0 SOL</span>
                 </div>
-                <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 text-center">
-                  <p className="text-sm text-slate-400">You Get</p>
-                  <p className="text-3xl font-bold text-green-400">0.83 SOL</p>
-                  <p className="text-xs text-slate-400 mt-2">+66% profit! 🎉</p>
-                </div>
-              </div>
-            </div>
 
-            <div className="space-y-6">
-              <h3 className="text-4xl font-bold text-white">Earn Together</h3>
-              <p className="text-lg text-slate-300">
-                Your success benefits from others' failures. But it's not zero-sum. A rising tide lifts all boats. More goal-achievers means a healthier community.
-              </p>
-              <div className="card space-y-3">
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-400 mt-1 flex-shrink-0" />
-                  <div>
-                    <p className="font-semibold text-white">Fair Distribution</p>
-                    <p className="text-sm text-slate-400">Rewards proportional to your stake</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-400 mt-1 flex-shrink-0" />
-                  <div>
-                    <p className="font-semibold text-white">Transparent & Verifiable</p>
-                    <p className="text-sm text-slate-400">All transactions on blockchain</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-400 mt-1 flex-shrink-0" />
-                  <div>
-                    <p className="font-semibold text-white">No Counterparty Risk</p>
-                    <p className="text-sm text-slate-400">Solana escrow handles all payouts</p>
-                  </div>
+                <div className="bg-solana-green/10 border border-solana-green/30 rounded-lg p-4 text-center space-y-1">
+                  <p className="text-xs text-text-muted">YOU GET</p>
+                  <p className="text-3xl font-black text-solana-green">0.83 SOL</p>
+                  <p className="text-xs text-text-muted">+66% profit! 🎉</p>
                 </div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+
+            <motion.div variants={itemVariants} className="space-y-6">
+              <h3 className="text-heading-lg text-white">Earn Together</h3>
+              <p className="text-lg text-text-secondary leading-relaxed">
+                Your success benefits from others' failures. But it's not zero-sum. A rising tide
+                lifts all boats. More goal-achievers means a healthier community.
+              </p>
+
+              <motion.div
+                initial="hidden"
+                whileInView="show"
+                variants={containerVariants}
+                viewport={{ once: true }}
+                className="glassmorphic-card space-y-4"
+              >
+                {[
+                  {
+                    title: 'Fair Distribution',
+                    desc: 'Rewards proportional to your stake',
+                  },
+                  {
+                    title: 'Transparent & Verifiable',
+                    desc: 'All transactions on blockchain',
+                  },
+                  {
+                    title: 'No Counterparty Risk',
+                    desc: 'Solana escrow handles all payouts',
+                  },
+                ].map((item, idx) => (
+                  <motion.div
+                    key={idx}
+                    variants={itemVariants}
+                    className="flex items-start gap-3"
+                  >
+                    <div className="w-5 h-5 rounded-full bg-solana-green flex items-center justify-center flex-shrink-0 mt-1">
+                      <span className="text-xs text-black font-bold">✓</span>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-white">{item.title}</p>
+                      <p className="text-sm text-text-muted">{item.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </motion.div>
+          </motion.div>
         </div>
-      </div>
+      </section>
+
+      {/* Tech Stack Section */}
+      <section className="section-padding bg-bg-card/30 border-y border-text-muted/10">
+        <div className="container-max">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            variants={containerVariants}
+            viewport={{ once: true }}
+            className="space-y-12"
+          >
+            <motion.div variants={itemVariants} className="text-center space-y-4">
+              <h2 className="text-heading-lg text-white">Built with Industry-Leading Technology</h2>
+              <p className="text-subheading max-w-2xl mx-auto">
+                Combining Solana, Snowflake, Cloudflare, and Supabase for a premium experience
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial="hidden"
+              whileInView="show"
+              variants={containerVariants}
+              viewport={{ once: true }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+            >
+              {[
+                { name: 'Solana', desc: 'Blockchain', icon: '⚡' },
+                { name: 'Snowflake', desc: 'AI & ML', icon: '🤖' },
+                { name: 'Cloudflare', desc: 'Storage & CDN', icon: '☁️' },
+                { name: 'Supabase', desc: 'Database', icon: '🗄️' },
+              ].map((tech, idx) => (
+                <motion.div key={idx} variants={itemVariants} className="card text-center">
+                  <div className="text-5xl mb-4">{tech.icon}</div>
+                  <h4 className="text-lg font-bold text-white mb-1">{tech.name}</h4>
+                  <p className="text-sm text-text-muted">{tech.desc}</p>
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
 
       {/* Final CTA */}
-      <div className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-cyan-500/10 to-blue-500/10" />
-        <div className="container-max relative z-10 text-center space-y-8">
-          <h2 className="text-5xl lg:text-6xl font-bold text-white">
+      <section className="section-padding relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-purple-500/10 via-transparent to-blue-500/10 pointer-events-none" />
+
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          variants={containerVariants}
+          viewport={{ once: true }}
+          className="container-max relative z-10 text-center space-y-8"
+        >
+          <motion.h2 variants={itemVariants} className="text-heading-lg text-white">
             Stop Talking. Start Achieving.
-          </h2>
-          <p className="text-xl text-slate-300 max-w-2xl mx-auto">
-            Your next goal is one click away. Create it today and join thousands of people who are serious about success.
-          </p>
-          <Link href="/create" className="inline-block btn-primary text-lg px-10 py-4">
-            Create Your First Goal
-          </Link>
-        </div>
-      </div>
-    </main>
+          </motion.h2>
+          <motion.p variants={itemVariants} className="text-subheading max-w-2xl mx-auto">
+            Real stakes. Real accountability. Real results. Your next goal is one click away.
+          </motion.p>
+          <motion.button
+            variants={itemVariants}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="btn-primary pulse-glow inline-flex items-center gap-2 text-lg px-10 py-4"
+          >
+            Connect Wallet
+            <ArrowRight className="w-5 h-5" />
+          </motion.button>
+        </motion.div>
+      </section>
+    </div>
   );
 }
