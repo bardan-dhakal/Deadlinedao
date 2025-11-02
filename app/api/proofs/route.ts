@@ -4,6 +4,11 @@ import { getGoalById, updateGoalStatus, createPayout } from '@/lib/supabase';
 import { validateProof, logValidation, AIPerformanceMonitor } from '@/lib/snowflake';
 import { processCompletionPayout } from '@/lib/solana';
 
+// Vercel configuration for Snowflake AI validation
+export const runtime = 'nodejs';
+export const maxDuration = 60; // AI validation can take 30-60 seconds
+export const dynamic = 'force-dynamic';
+
 /**
  * POST /api/proofs
  * Submit proof for validation

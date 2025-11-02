@@ -4,8 +4,6 @@
  */
 
 import snowflake from 'snowflake-sdk';
-import { readFileSync } from 'fs';
-import { join } from 'path';
 
 interface SnowflakeConfig {
   account: string;
@@ -28,13 +26,10 @@ function getSnowflakeConfig(): SnowflakeConfig {
     throw new Error('Missing SNOWFLAKE_ACCOUNT environment variable');
   }
 
-  // Private key path
-  const privateKeyPath = join(process.cwd(), '.snowflake-keys', 'rsa_key.p8');
-
   return {
     account,
     username,
-    privateKeyPath,
+    privateKeyPath: '', // Not needed anymore, kept for interface compatibility
     warehouse,
   };
 }
@@ -50,10 +45,21 @@ function createConnection(): snowflake.Connection {
 
   if (process.env.SNOWFLAKE_PRIVATE_KEY) {
     // Production: Read from environment variable
+    console.log('[Snowflake] Using private key from environment variable');
     privateKeyData = process.env.SNOWFLAKE_PRIVATE_KEY;
   } else {
-    // Local development: Read from file
-    privateKeyData = readFileSync(config.privateKeyPath, 'utf8');
+    // Local development: Read from file (lazy import to avoid serverless issues)
+    console.log('[Snowflake] Using private key from file (local development)');
+    try {
+      const { readFileSync } = require('fs');
+      const { join } = require('path');
+      const privateKeyPath = join(process.cwd(), '.snowflake-keys', 'rsa_key.p8');
+      privateKeyData = readFileSync(privateKeyPath, 'utf8');
+    } catch (error) {
+      throw new Error(
+        'Snowflake private key not found. Set SNOWFLAKE_PRIVATE_KEY environment variable or ensure .snowflake-keys/rsa_key.p8 exists locally.'
+      );
+    }
   }
 
   const connection = snowflake.createConnection({

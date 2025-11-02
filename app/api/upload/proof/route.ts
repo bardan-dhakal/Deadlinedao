@@ -2,6 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { randomUUID } from 'crypto';
 
+// Vercel configuration for R2 uploads
+export const runtime = 'nodejs';
+export const maxDuration = 30; // R2 uploads typically complete within 30s
+export const dynamic = 'force-dynamic';
+
 // Create R2 client factory function (lazy initialization)
 function getR2Client() {
   // Validate environment variables
