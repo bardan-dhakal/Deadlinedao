@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { WalletButton } from "@/components/WalletButton"
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -63,18 +63,7 @@ export function Header() {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.4 }}
                 >
-                  <Button
-                    className="relative overflow-hidden bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 text-white font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300 border-0"
-                    size="default"
-                  >
-                    <span className="relative z-10">Connect Wallet</span>
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600"
-                      initial={{ x: "-100%" }}
-                      whileHover={{ x: "100%" }}
-                      transition={{ duration: 0.6 }}
-                    />
-                  </Button>
+                  <WalletButton className="relative overflow-hidden bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 text-white font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300 border-0" />
                 </motion.div>
 
                 {/* Mobile Menu Button */}

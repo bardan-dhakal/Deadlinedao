@@ -111,7 +111,7 @@ async function analyzeProofText(
   confidence: number;
   concerns: string[];
 }> {
-  const prompt = `You are an AI validator for a goal accountability platform. Analyze if the proof description demonstrates completion of the goal.
+  const prompt = `You are an AI validator for a goal accountability platform. Be generous - if someone made a reasonable effort to complete their goal, give them credit.
 
 GOAL:
 Title: ${goal.title}
@@ -122,16 +122,21 @@ PROOF SUBMITTED:
 ${proofText}
 
 Analyze:
-1. Does the proof demonstrate the goal was actually completed?
-2. Is the proof specific and credible?
-3. Are there any concerns or red flags?
+1. Does the proof demonstrate the goal was completed (or a good faith attempt was made)?
+2. Is there evidence of actual effort and work?
+3. Only flag serious concerns (fraud, completely unrelated content)
+
+Be lenient with:
+- Generic writing (many people aren't eloquent)
+- Brief descriptions (they still show effort)
+- Simple proof (completion is what matters)
 
 Respond in JSON format:
 {
   "is_match": true/false,
   "match_score": 0-100,
   "confidence": 0-100,
-  "concerns": ["list of concerns if any"]
+  "concerns": ["list of serious concerns only"]
 }`;
 
   const { completion, error } = await cortexComplete(
@@ -198,18 +203,19 @@ async function detectFraud(
   fraudScore: number;
   redFlags: string[];
 }> {
-  const prompt = `You are a fraud detection AI. Analyze this proof submission for signs of fraud or deception.
+  const prompt = `You are a fraud detection AI. Analyze this proof submission for signs of OBVIOUS fraud or deception. Be lenient - only flag clear fraud.
 
 GOAL: ${goal.title}
 
 PROOF: ${proofText}
 
 Check for:
-- Generic/vague descriptions that could apply to anything
-- Copy-pasted content or AI-generated text
-- Contradictions or inconsistencies
-- Excessive claims without specific details
-- Suspicious patterns
+- Clear contradictions or lies
+- Impossible claims (e.g., "I ran 1000 miles today")
+- Completely unrelated content
+- Evidence of malicious intent
+
+Note: Generic descriptions or simple writing are NOT fraud - only flag CLEAR deception.
 
 Respond in JSON:
 {
@@ -257,19 +263,21 @@ async function checkSpecificity(proofText: string): Promise<{
   score: number;
   issues: string[];
 }> {
-  const prompt = `Rate the specificity and detail level of this proof description (0-100).
+  const prompt = `Rate the specificity and detail level of this proof description (0-100). Be generous - any reasonable effort should score at least 50.
 
-Specific proofs include:
+Good proofs include:
 - Concrete details, numbers, dates, times
 - Specific outcomes or results
 - Verifiable information
 - Personal insights
+- Demonstrates effort and completion
 
-Vague proofs have:
-- Generic statements
-- No concrete details
-- Could apply to anything
-- Overly brief
+Rate generously:
+- 80-100: Highly detailed with specifics
+- 60-79: Good effort with some details
+- 40-59: Reasonable attempt, shows completion
+- 20-39: Very vague but shows effort
+- 0-19: No real content
 
 PROOF: ${proofText}
 
@@ -348,18 +356,14 @@ function determineVerdict(checks: {
     return 'rejected';
   }
 
-  // Auto-approve if high quality and confidence
-  if (checks.qualityScore >= 75 && checks.confidence >= 70) {
-    return 'approved';
-  }
-
-  // Auto-reject if very low quality
-  if (checks.qualityScore < 40 || checks.confidence < 40) {
+  // Auto-reject if extremely low quality (basically spam)
+  if (checks.qualityScore < 20 || checks.confidence < 20) {
     return 'rejected';
   }
 
-  // Everything else needs manual review
-  return 'needs_review';
+  // For demo: Approve everything else that shows effort
+  // In production, you'd have a needs_review state with admin panel
+  return 'approved';
 }
 
 /**

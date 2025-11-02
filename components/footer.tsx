@@ -114,12 +114,8 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-white/5 pt-8 mt-12">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500">
+          <div className="flex items-center justify-center text-sm text-gray-500">
             <div>© 2025 DeadlineDAO. All rights reserved.</div>
-            <div className="text-center">Built for OSU Hackathon 2025 by Zaine Elmithani</div>
-            <div className="flex items-center gap-1">
-              Built with <span className="text-red-400">❤️</span> using Solana, Snowflake, and Cloudflare
-            </div>
           </div>
         </div>
       </div>

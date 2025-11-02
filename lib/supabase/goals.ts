@@ -242,3 +242,22 @@ export async function getRecentGoals(limit: number = 10): Promise<{ data: Goal[]
     return { data: null, error: error as Error };
   }
 }
+
+/**
+ * Get all goals (for redistribution calculations)
+ */
+export async function getAllGoals(): Promise<{ data: Goal[] | null; error: Error | null }> {
+  try {
+    const { data, error } = await supabase
+      .from('goals')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    return { data: data as Goal[], error: null };
+  } catch (error) {
+    console.error('Error fetching all goals:', error);
+    return { data: null, error: error as Error };
+  }
+}

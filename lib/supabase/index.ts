@@ -14,6 +14,7 @@ export {
   deleteGoal,
   getGoalsByCategory,
   getRecentGoals,
+  getAllGoals,
 } from './goals';
 
 // Proofs Operations

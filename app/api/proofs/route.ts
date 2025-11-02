@@ -47,10 +47,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check deadline hasn't passed
-    if (new Date(goal.deadline) < new Date()) {
+    // Check deadline hasn't passed (allow 7 days grace period for demo)
+    const deadline = new Date(goal.deadline);
+    const now = new Date();
+    const gracePeriodDays = 7;
+    const gracePeriodMs = gracePeriodDays * 24 * 60 * 60 * 1000;
+
+    if (deadline.getTime() + gracePeriodMs < now.getTime()) {
       return NextResponse.json(
-        { error: 'Goal deadline has passed' },
+        { error: 'Goal deadline has passed beyond grace period' },
         { status: 400 }
       );
     }
@@ -110,18 +115,42 @@ export async function POST(request: NextRequest) {
       // Update goal status
       await updateGoalStatus(goal.id, 'completed');
 
-      // Process payout
-      const payoutResult = await processCompletionPayout(goal, []);
+      // Fetch failed goals with SAME DEADLINE for fair competition
+      // Group by deadline so users compete within same time period
+      const { getAllGoals } = await import('@/lib/supabase');
+      const { data: allGoals } = await getAllGoals();
+
+      // Get goal deadline
+      const goalDeadline = new Date(goal.deadline);
+
+      // Find failed goals within same deadline period (same day)
+      const failedGoals = allGoals?.filter(g => {
+        if (g.status !== 'failed') return false;
+        const gDeadline = new Date(g.deadline);
+        // Match goals with same deadline date
+        return (
+          gDeadline.getFullYear() === goalDeadline.getFullYear() &&
+          gDeadline.getMonth() === goalDeadline.getMonth() &&
+          gDeadline.getDate() === goalDeadline.getDate()
+        );
+      }) || [];
+
+      console.log(`[API] Found ${failedGoals.length} failed goals with matching deadline (${goalDeadline.toDateString()})`);
+
+      // Process payout with redistribution
+      const payoutResult = await processCompletionPayout(goal, failedGoals);
 
       if (payoutResult.signature) {
-        // Record payout in database
+        // Record payout in database (amount from payoutResult includes rewards!)
         await createPayout({
           goal_id: goal.id,
           wallet_address: goal.wallet_address,
-          amount: goal.stake_amount,
+          amount: payoutResult.amount,
           tx_signature: payoutResult.signature,
-          payout_type: 'original_stake',
+          payout_type: payoutResult.type,
         });
+
+        console.log(`[API] Payout recorded: ${payoutResult.amount} SOL (type: ${payoutResult.type})`);
       }
 
       monitor.complete({ verdict: 'approved', payout: payoutResult.signature });
@@ -133,7 +162,10 @@ export async function POST(request: NextRequest) {
         goal_status: 'completed',
         payout: payoutResult.signature ? {
           signature: payoutResult.signature,
-          amount: goal.stake_amount,
+          amount: payoutResult.amount,
+          type: payoutResult.type,
+          originalStake: goal.stake_amount,
+          reward: payoutResult.amount - goal.stake_amount,
         } : null,
       }, { status: 200 });
 
