@@ -161,12 +161,17 @@ export async function POST(request: NextRequest) {
         validation: validationResult,
         goal_status: 'completed',
         payout: payoutResult.signature ? {
+          phase: 'stake_returned',
           signature: payoutResult.signature,
           amount: payoutResult.amount,
           type: payoutResult.type,
-          originalStake: goal.stake_amount,
-          reward: payoutResult.amount - goal.stake_amount,
+          message: 'Your stake has been returned! Rewards will be distributed after the deadline.',
         } : null,
+        reward_info: {
+          status: 'pending',
+          message: `Rewards will be calculated and distributed after the deadline (${new Date(goal.deadline).toLocaleDateString()})`,
+          note: 'Your reward depends on how many participants complete vs fail their goals',
+        },
       }, { status: 200 });
 
     } else if (validationResult.verdict === 'rejected') {

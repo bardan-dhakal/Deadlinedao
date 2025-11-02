@@ -147,53 +147,39 @@ export async function executeRedistribution(
 }
 
 /**
- * Process payout for a single completed goal
- * Used when a goal is completed successfully
+ * Process IMMEDIATE payout for a single completed goal
+ * Returns ONLY the original stake - rewards are distributed later after deadline
+ *
+ * NEW TWO-PHASE PAYOUT SYSTEM:
+ * Phase 1 (Immediate): Return original stake when proof approved
+ * Phase 2 (At deadline): Distribute rewards from failed stakes pool
  */
 export async function processCompletionPayout(
   goal: Goal,
   otherActiveGoalsSameDeadline: Goal[]
 ): Promise<PayoutResult> {
   try {
-    // For single goal completion, check if there are simultaneous failures
-    const failedGoals = otherActiveGoalsSameDeadline.filter(g => g.status === 'failed');
+    // PHASE 1: Always return only the original stake immediately
+    // Rewards will be calculated and distributed AFTER the deadline
+    const { signature, error } = await sendPayoutFromEscrow(
+      goal.wallet_address,
+      goal.stake_amount
+    );
 
-    if (failedGoals.length === 0) {
-      // No losers, just return the original stake
-      const { signature, error } = await sendPayoutFromEscrow(
-        goal.wallet_address,
-        goal.stake_amount
-      );
-
-      if (error) {
-        return {
-          recipient: goal.wallet_address,
-          amount: goal.stake_amount,
-          type: 'original_stake',
-          error: error.message,
-        };
-      }
-
+    if (error) {
       return {
         recipient: goal.wallet_address,
         amount: goal.stake_amount,
         type: 'original_stake',
-        signature: signature || undefined,
+        error: error.message,
       };
-    }
-
-    // Calculate redistribution with other goals
-    const result = await executeRedistribution([goal], failedGoals);
-
-    if (result.payouts.length > 0) {
-      return result.payouts[0];
     }
 
     return {
       recipient: goal.wallet_address,
-      amount: 0,
+      amount: goal.stake_amount,
       type: 'original_stake',
-      error: 'Redistribution calculation failed',
+      signature: signature || undefined,
     };
   } catch (error) {
     console.error('Error processing completion payout:', error);
@@ -202,6 +188,98 @@ export async function processCompletionPayout(
       amount: 0,
       type: 'original_stake',
       error: error instanceof Error ? error.message : 'Unknown error',
+    };
+  }
+}
+
+/**
+ * PHASE 2: Distribute rewards after deadline
+ * Called after the deadline has passed to distribute rewards from failed stakes
+ */
+export async function distributeDeadlineRewards(
+  completedGoals: Goal[],
+  failedGoals: Goal[]
+): Promise<RedistributionResult> {
+  try {
+    // Calculate proportional rewards (NOT including original stakes)
+    const totalWinnersStake = completedGoals.reduce((sum, g) => sum + g.stake_amount, 0);
+    const totalLosersStake = failedGoals.reduce((sum, g) => sum + g.stake_amount, 0);
+
+    if (completedGoals.length === 0 || totalWinnersStake === 0) {
+      return {
+        totalWinnersStake,
+        totalLosersStake,
+        payouts: [],
+        errors: ['No winners to distribute rewards to'],
+      };
+    }
+
+    if (totalLosersStake === 0) {
+      return {
+        totalWinnersStake,
+        totalLosersStake,
+        payouts: [],
+        errors: ['No failed stakes to redistribute'],
+      };
+    }
+
+    // Calculate each winner's reward (NOT including their stake - already returned)
+    const rewardPayouts: Array<{ recipient: string; amount: number }> = [];
+
+    for (const winner of completedGoals) {
+      const proportion = winner.stake_amount / totalWinnersStake;
+      const reward = proportion * totalLosersStake;
+
+      if (reward > 0) {
+        rewardPayouts.push({
+          recipient: winner.wallet_address,
+          amount: reward,
+        });
+      }
+    }
+
+    // Execute batch reward payouts
+    const { signatures, errors: batchErrors } = await sendBatchPayouts(rewardPayouts);
+
+    const payouts: PayoutResult[] = [];
+    const errors: string[] = [];
+
+    let signatureIndex = 0;
+    for (const rewardPayout of rewardPayouts) {
+      const hasError = batchErrors.find(e => e.recipient === rewardPayout.recipient);
+
+      if (hasError) {
+        payouts.push({
+          recipient: rewardPayout.recipient,
+          amount: rewardPayout.amount,
+          type: 'completion_reward',
+          error: hasError.error,
+        });
+        errors.push(`Failed to pay reward to ${rewardPayout.recipient}: ${hasError.error}`);
+      } else {
+        payouts.push({
+          recipient: rewardPayout.recipient,
+          amount: rewardPayout.amount,
+          type: 'completion_reward',
+          signature: signatures[signatureIndex],
+        });
+        signatureIndex++;
+      }
+    }
+
+    return {
+      totalWinnersStake,
+      totalLosersStake,
+      payouts,
+      errors,
+    };
+  } catch (error) {
+    console.error('Error distributing deadline rewards:', error);
+    return {
+      totalWinnersStake: 0,
+      totalLosersStake: 0,
+      payouts: [],
+      errors: [error instanceof Error ? error.message : 'Unknown error'],
     };
   }
 }

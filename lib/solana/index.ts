@@ -45,6 +45,7 @@ export {
   calculateRedistribution,
   executeRedistribution,
   processCompletionPayout,
+  distributeDeadlineRewards,
   calculatePotentialEarnings,
   formatPayoutBreakdown,
   simulateRedistribution,
