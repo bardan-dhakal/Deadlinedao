@@ -154,15 +154,16 @@ export default function DashboardPage() {
               {/* Main Layout: Goals (2 cols) + Prize Pool (1 col) */}
               <div className="grid gap-6 lg:grid-cols-3">
                 {/* Goals Section - Takes 2 columns on large screens */}
-                <div className="lg:col-span-2 grid gap-6 md:grid-cols-2">
+                <div className="lg:col-span-2 grid gap-6 md:grid-cols-2 auto-rows-max">
                   {goals.map((goal, index) => (
                     <motion.div
                       key={goal.id}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 }}
+                      className="h-fit"
                     >
-                      <Card className="bg-gray-900/50 border-gray-800 hover:border-purple-500/50 transition-colors h-full">
+                      <Card className="bg-gray-900/50 border-gray-800 hover:border-purple-500/50 transition-colors">
                         <CardHeader>
                           <div className="flex items-start justify-between mb-2">
                             {getStatusIcon(goal.status)}

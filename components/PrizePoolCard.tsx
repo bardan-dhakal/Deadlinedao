@@ -82,8 +82,8 @@ export function PrizePoolCard({ deadline, userWallet }: PrizePoolCardProps) {
     c => c.wallet === userWallet
   );
 
-  // Don't show if no competition
-  if (prizeData.statistics.totalGoals === 0) {
+  // Don't show if no active competition
+  if (prizeData.statistics.activeGoals === 0 || prizeData.competition.totalCompetitors === 0) {
     return null;
   }
 
